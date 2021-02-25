@@ -1,0 +1,421 @@
+header {
+    width: 100%;
+    height: 100px;
+    background: #082960;
+
+    .header {
+        margin: auto;
+        width: 1024px;
+        height: 100px;
+        background: #082960;
+
+        ul {
+            li {
+                height: 100px;
+                float: left;
+
+                a {
+                    margin: 0px 50px;
+                    width: 50px;
+                    height: 100px;
+                    color: #fff;
+                    float: left;
+                    text-align: center;
+                    line-height: 100px;
+                    cursor: pointer;
+                }
+            }
+
+            li:hover {
+                background: rgba(70, 72, 94, .4);
+                border-bottom: 2px solid #4886FF;
+            }
+        }
+
+        div {
+            width: 300px;
+            float: right;
+
+            span {
+                margin-right: 10px;
+                color: #ffd000;
+                line-height: 100px;
+            }
+
+            img {
+                margin: 25px 25px 25px 0;
+                width: 50px;
+                height: 50px;
+                float: right;
+            }
+        }
+    }
+}
+
+main {
+    width: 100%;
+    height: 1000px;
+    background: #1abc9c;
+
+    .main {
+        margin: auto;
+        width: 1024px;
+        height: 1000px;
+        background: #0a91de;
+        box-shadow: -10px 0px 10px #222, 10px 0px 10px #222;
+
+        .control {
+            padding: 10px;
+            width: 100%;
+            height: 55px;
+
+            #left {
+                display: flex;
+                align-items: center;
+                float: left;
+
+                input {
+                    margin-right: 5px;
+                }
+
+                p {
+                    position: relative;
+
+                    /* 三角形 */
+                    i {
+                        display: block;
+                        width: 0px;
+                        height: 0px;
+                        border: 7px solid #000;
+                        border-color: #fff transparent transparent transparent;
+                        position: absolute;
+                        right: -18px;
+                        top: 7px;
+                        cursor: pointer;
+                    }
+                }
+
+
+            }
+
+            #right {
+                float: right;
+                display: flex;
+                align-items: center;
+
+                p {
+                    margin-right: 10px;
+                }
+
+                input {
+                    width: 100px;
+                    height: 35px;
+                    cursor: pointer;
+                }
+            }
+        }
+
+        .stock {
+
+            div {
+                margin: 15px;
+                width: 140px;
+                height: 160px;
+                background: #0d3272;
+                border: 1px solid #032031;
+                float: left;
+
+                img {
+                    margin: 0px 10px;
+                    width: 120px;
+                }
+
+                p {
+                    color: #000;
+                    text-align: center;
+                }
+
+                input {
+                    float: right;
+                }
+            }
+        }
+
+        .ctrl {
+            width: 1024px;
+            height: 150px;
+            background: url(../images/marcket-header-bg.png);
+            overflow: hidden;
+
+            .link {
+                margin-top: 10px;
+                width: 1024px;
+                border-bottom: 1px solid #2c2f38;
+                display: flex;
+                justify-content: space-evenly;
+
+                div {
+                    width: 100px;
+                    height: 80px;
+                    position: relative;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-around;
+                    align-items: center;
+                    //cursor: pointer;
+
+                    p {
+                        color: #BF9E4B;
+                    }
+
+                    ul {
+                        width: 700px;
+                        height: 120px;
+                        background: #2D2F3E;
+                        position: absolute;
+                        top: 0px;
+                        left: 100px;
+                        z-index: 10;
+                        display: none;
+
+                        li {
+                            margin: 5px;
+                            width: 90px;
+                            height: 30px;
+                            background: #353748;
+                            border-radius: 2px;
+                            color: #90969C;
+                            text-align: center;
+                            line-height: 30px;
+                            float: left;
+                            cursor: pointer;
+                        }
+
+                        li:hover {
+                            color: #fff;
+                            background: #484b5f;
+                        }
+                    }
+                }
+
+                div:hover {
+                    background: #2D2F3E;
+
+                    ul {
+                        display: block;
+                    }
+                }
+            }
+
+            .sort {
+                margin-top: 14px;
+                width: 242px;
+                height: 32px;
+                float: right;
+
+                input:nth-of-type(1) {
+                    padding: 3px 6px;
+                    width: 150px;
+                    height: 32px;
+                    border: 1px solid #3F5D97;
+                    background: rgba(72, 134, 255, .16);
+                    color: #E4E8EE;
+                    float: left;
+                }
+
+                input:nth-of-type(2) {
+                    width: 50px;
+                    height: 32px;
+                    background: #3F5D97;
+                    color: #E4E8EE;
+                    float: left;
+                    cursor: pointer;
+                }
+            }
+        }
+
+        .list {
+            padding: 22px 22px 0px 22px;
+            margin: auto;
+            width: 1024px;
+            height: 1000px;
+            background: #0a91de;
+
+            .shop {
+                margin: 9px 9px;
+                width: 222px;
+                height: 250px;
+                background: #0d3272;
+                float: left;
+                text-align: center;
+
+                div:nth-child(1) {
+                    padding: 0 25px;
+                    width: 222px;
+                    background: url(../images/item_bg.png);
+
+                    img {
+                        width: 172px;
+                    }
+                }
+
+                div:nth-child(2) {
+                    margin: 20px 0;
+                }
+
+                div:nth-child(3) {
+                    margin: 20px 0;
+                    display: flex;
+                    justify-content: space-around;
+                    align-items: center;
+
+                    input {
+                        width: 100px;
+                        height: 40px;
+                        background: #031b43;
+                        border-radius: 10px;
+                        color: #fff;
+                        font-size: 12px;
+                        cursor: pointer;
+                    }
+
+                    input:hover {
+                        background: #063e9b;
+                    }
+                }
+
+            }
+        }
+
+
+    }
+
+    .car {
+        width: 166px;
+        height: 415px;
+        background: url(../images/car.png) no-repeat;
+        position: fixed;
+        top: 30%;
+        left: 0;
+        z-index: 999;
+
+        #monkeybody {
+            width: 100px;
+            position: absolute;
+            top: -85px;
+            left: 30px;
+            z-index: -1;
+        }
+
+        #monkeyhand {
+            width: 50px;
+            position: absolute;
+            top: 6px;
+            left: 54px;
+            z-index: 1;
+        }
+
+        #car {
+            margin: 12px 0px 0px 11px;
+            width: 139px;
+            height: 300px;
+            background: #082960;
+            overflow-y: scroll;
+            position: relative;
+
+            div {
+                width: 120px;
+                height: 140px;
+
+                img {
+                    width: 120px;
+                    height: 80px;
+                    float: left;
+                }
+
+                p {
+                    width: 120px;
+                    color: #ffd000;
+                    float: left;
+                    text-align: center;
+                }
+
+                input {
+                    width: 20px;
+                    float: left;
+                    text-align: center;
+                }
+
+                input:nth-of-type(1) {
+                    margin-left: 30px;
+                }
+            }
+        }
+
+        #pay {
+            margin: 12px 0px 0px 11px;
+            width: 139px;
+            height: 40px;
+            display: flex;
+            justify-content: space-evenly;
+
+            input {
+                width: 50px;
+                height: 40px;
+            }
+
+            input:hover {
+                background: #ccc;
+                cursor: pointer;
+            }
+        }
+
+        /* 三角形 */
+        #slip {
+            width: 16px;
+            height: 18px;
+            background: url(../images/square.png) no-repeat;
+            background-size: contain;
+            position: absolute;
+            top: 41%;
+            right: 0%;
+            cursor: pointer;
+            transform: rotate(180deg);
+        }
+
+        #slip:hover {
+            background: url(../images/square-hover.png) no-repeat;
+            background-size: contain;
+        }
+
+        #up {
+            width: 16px;
+            height: 18px;
+            background: url(../images/square.png) no-repeat;
+            background-size: contain;
+            position: absolute;
+            bottom: 5%;
+            right: 46%;
+            cursor: pointer;
+            transform: rotate(270deg);
+        }
+
+        #up:hover {
+            background: url(../images/square-hover.png) no-repeat;
+            background-size: contain;
+        }
+    }
+}
+
+footer {
+    width: 100%;
+    height: 100px;
+    background: #000;
+
+    .footer {
+        margin: auto;
+        width: 1024px;
+        height: 100px;
+        background: #000;
+    }
+}

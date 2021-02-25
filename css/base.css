@@ -1,0 +1,119 @@
+/*公共样式--开始*/
+html,
+body,
+div,
+ul,
+li,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+dl,
+dt,
+dd,
+ol,
+form,
+input,
+textarea,
+th,
+td,
+select {
+    margin: 0;
+    padding: 0;
+}
+
+* {
+    /* 怪异盒模型 */
+    box-sizing: border-box;
+}
+
+.con {
+    width: 1192px;
+    margin: auto;
+}
+
+html,
+body {
+    min-height: 100%;
+}
+
+body {
+    font-family: "Microsoft YaHei";
+    font-size: 14px;
+    color: #333;
+}
+
+i {
+    font-style: normal;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight: normal;
+}
+
+ul,
+ol {
+    /* 清除列表符号 */
+    list-style: none;
+}
+
+img {
+    border: none;
+}
+
+a {
+    /* 清除a下划线 */
+    text-decoration: none;
+    color: #232323;
+}
+
+table {
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+input,
+textarea {
+    /* 去掉聚焦时蓝色边框 */
+    outline: none;
+    border: none;
+}
+
+textarea {
+    /* 禁止拉动 */
+    resize: none;
+    overflow: auto;
+}
+
+.clearfix {
+    zoom: 1;
+}
+
+.clearfix:after {
+    /* 清除浮动 */
+    content: ".";
+    width: 0;
+    height: 0;
+    visibility: hidden;
+    display: block;
+    clear: both;
+    overflow: hidden;
+}
+
+.fl {
+    /* 左浮 */
+    float: left;
+}
+
+.fr {
+    /* 右浮 */
+    float: right;
+}

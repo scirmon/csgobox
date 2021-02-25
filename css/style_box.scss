@@ -1,0 +1,212 @@
+header {
+    width: 100%;
+    height: 100px;
+    background: #082960;
+
+    .header {
+        margin: auto;
+        width: 1024px;
+        height: 100px;
+        background: #082960;
+
+        ul {
+            li {
+                height: 100px;
+                float: left;
+
+                a {
+                    margin: 0px 50px;
+                    width: 50px;
+                    height: 100px;
+                    color: #fff;
+                    float: left;
+                    text-align: center;
+                    line-height: 100px;
+                    cursor: pointer;
+                }
+            }
+
+            li:hover {
+                background: rgba(70, 72, 94, .4);
+                border-bottom: 2px solid #4886FF;
+            }
+        }
+
+        div {
+            width: 200px;
+            float: right;
+
+            #money {
+                color: #ffd000;
+                line-height: 100px;
+            }
+
+            img {
+                margin: 25px 25px 25px 0;
+                width: 50px;
+                height: 50px;
+                float: right;
+            }
+        }
+    }
+}
+
+main {
+    width: 100%;
+    height: 1300px;
+    background: radial-gradient(#063e9b, #031b43);
+    position: relative;
+    overflow: hidden;
+
+    .open {
+        margin: auto;
+        margin-top: 300px;
+        width: 256px;
+        height: 300px;
+
+        div {
+            width: 256px;
+            height: 198px;
+            position: relative;
+            overflow: hidden;
+
+            img {
+                width: 256px;
+            }
+
+            //width修改滚动条的长度
+            .goods {
+                padding: 4px 0;
+                width: 4010px;
+                background: rgba(0, 0, 0, 0.3);
+                position: absolute;
+                top: 0px;
+                left: 0px;
+                animation: open forwards 10s ease-in-out;
+                //forwards保持动画完成后的效果
+            }
+
+            #arms {
+                margin-right: 10px;
+                padding-top: 35px;
+                width: 160px;
+                height: 190px;
+                float: left;
+
+                img {
+                    width: 160px;
+                }
+            }
+        }
+
+        input {
+            margin: 4px 28px 0 28px;
+            width: 200px;
+            height: 50px;
+            background: #031b43;
+            border-radius: 10px;
+            color: #fff;
+            cursor: pointer;
+        }
+    }
+
+    .show {
+        width: 1024px;
+        height: 700px;
+        background: #031333;
+        border-radius: 20px 20px 0 0;
+        position: absolute;
+        top: 0;
+        bottom: -600px;
+        right: 0;
+        left: 0;
+        margin: auto;
+
+        #header {
+            margin: 0;
+            width: 100%;
+            height: 50px;
+            background: #060e9b;
+            border-radius: 20px 20px 0 0;
+
+            p {
+                color: #ccc;
+                font-size: 20px;
+                line-height: 50px;
+            }
+        }
+
+        div {
+            margin-top: 10px;
+            margin-left: 10px;
+            width: 160px;
+            height: 190px;
+            float: left;
+
+            img {
+                width: 160px;
+                height: 120px;
+            }
+
+            p {
+                color: #fff;
+                text-align: center;
+            }
+
+            p:nth-of-type(2) {
+                color: #ffd000;
+            }
+        }
+    }
+}
+
+.mask {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    bottom: 0px;
+    right: 0px;
+    background: rgba(0, 0, 0, 0.7);
+    display: none;
+    z-index: 10;
+
+    div {
+        padding: 50px 50px 0 50px;
+        width: 300px;
+        height: 300px;
+        background: rgb(12, 6, 105);
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+
+        h2 {
+            color: #ffd000;
+            text-align: center;
+        }
+
+        img {
+            width: 200px;
+            height: 150px;
+        }
+
+        p {
+            text-align: center;
+        }
+
+        input {
+            margin: 15px 75px;
+            width: 50px;
+        }
+    }
+}
+
+@keyframes open {
+    from {
+        transform: translateX(0px);
+    }
+
+    to {
+        transform: translateX(-3530px);
+    }
+}

@@ -1,0 +1,58 @@
+{
+  "id": "",
+  "name": "",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "12848531",
+      "name": "手枪",
+      "font_class": "shouqiang",
+      "unicode": "e683",
+      "unicode_decimal": 59011
+    },
+    {
+      "icon_id": "13075741",
+      "name": "PVC手套",
+      "font_class": "PVCshoutao",
+      "unicode": "e707",
+      "unicode_decimal": 59143
+    },
+    {
+      "icon_id": "14074478",
+      "name": "匕首",
+      "font_class": "bishou",
+      "unicode": "e643",
+      "unicode_decimal": 58947
+    },
+    {
+      "icon_id": "14074482",
+      "name": "冲锋枪",
+      "font_class": "chongfengqiang",
+      "unicode": "e645",
+      "unicode_decimal": 58949
+    },
+    {
+      "icon_id": "15470007",
+      "name": "机枪",
+      "font_class": "jiqiang",
+      "unicode": "e627",
+      "unicode_decimal": 58919
+    },
+    {
+      "icon_id": "16640541",
+      "name": "步枪",
+      "font_class": "buqiang",
+      "unicode": "e705",
+      "unicode_decimal": 59141
+    },
+    {
+      "icon_id": "16640545",
+      "name": "霰弹枪",
+      "font_class": "xiandanqiang",
+      "unicode": "e706",
+      "unicode_decimal": 59142
+    }
+  ]
+}

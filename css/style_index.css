@@ -1,0 +1,188 @@
+html,
+body {
+  background: url(../images/header-bg_csgo.jpg) no-repeat;
+  background-size: cover;
+  background-position: center top;
+}
+
+header {
+  width: 100%;
+  height: 100px;
+}
+header .header {
+  margin: auto;
+  width: 1024px;
+  height: 100px;
+}
+header .header ul li {
+  height: 100px;
+  float: left;
+}
+header .header ul li a {
+  margin: 0px 50px;
+  width: 50px;
+  height: 100px;
+  color: #fff;
+  float: left;
+  text-align: center;
+  line-height: 100px;
+  cursor: pointer;
+}
+header .header ul li:hover {
+  background: rgba(70, 72, 94, 0.4);
+  border-bottom: 2px solid #4886FF;
+}
+header .header div {
+  width: 200px;
+  float: right;
+}
+header .header div span {
+  color: #ffd000;
+  line-height: 100px;
+}
+header .header div img {
+  margin: 25px 25px 25px 0;
+  width: 50px;
+  height: 50px;
+  float: right;
+}
+
+main {
+  width: 100%;
+  height: 830px;
+}
+main .main {
+  padding: 14px 15px 0 15px;
+  margin: auto;
+  width: 1024px;
+  height: 830px;
+  box-shadow: -10px 0px 10px #222, 10px 0px 10px #222;
+}
+main .main #show {
+  margin-bottom: 5px;
+  width: 100%;
+  height: 400px;
+  overflow: hidden;
+}
+main .main #show .title {
+  margin: 10px 0px;
+  height: 30px;
+  border-bottom: 1px solid #BF9E4B;
+}
+main .main #show .title h2 {
+  width: 100px;
+  height: 30px;
+  background: #BF9E4B;
+  background-image: linear-gradient(270deg, rgba(206, 170, 52, 0.8) 0, rgba(189, 149, 42, 0.8) 36%, rgba(160, 113, 24, 0.8) 100%);
+  color: #fff;
+  font-size: 18px;
+  text-align: center;
+  line-height: 30px;
+  float: left;
+}
+main .main #show .title a {
+  color: #BF9E4B;
+  float: right;
+  cursor: pointer;
+}
+main .main #show .box {
+  margin: 10px 7px;
+  width: 128px;
+  height: 160px;
+  float: left;
+}
+main .main #show .box img {
+  width: 128px;
+  height: 99px;
+}
+main .main #show .box p {
+  color: #ffff;
+  text-align: center;
+}
+main .advert {
+  padding: 0 10px;
+  width: 73px;
+  height: 207px;
+  background: url(../images/bg-advert.png);
+  position: fixed;
+  z-index: 10;
+  top: 25%;
+  right: 1rem;
+}
+main .advert a {
+  margin-top: 70px;
+  display: block;
+  font-size: 20px;
+  color: #BF9E4B;
+}
+main .advert span {
+  color: #4e4e5b;
+  font-size: 30px;
+  position: absolute;
+  top: -6px;
+  left: 6px;
+  cursor: pointer;
+}
+
+footer {
+  width: 100%;
+  height: 100px;
+  background: #000;
+}
+footer .footer {
+  margin: auto;
+  width: 1024px;
+  height: 100px;
+  background: #000;
+}
+
+.mask {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+  right: 0px;
+  background: rgba(0, 0, 0, 0.7);
+  display: none;
+  z-index: 10;
+}
+.mask #box {
+  width: 300px;
+  height: 200px;
+  background: #0b3c91;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: space-around;
+  position: relative;
+}
+.mask #box span {
+  color: #fff;
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  cursor: pointer;
+}
+.mask #box div {
+  width: 157px;
+  height: 50px;
+}
+.mask #box div p {
+  color: #fff;
+}
+.mask #box div input {
+  height: 30px;
+}
+.mask #box div:nth-child(4) {
+  padding: 0 20px;
+}
+.mask #box div:nth-child(4) input {
+  width: 40px;
+}
+.mask #box div:nth-child(4) .sign {
+  margin-right: 27px;
+}

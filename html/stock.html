@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>库存</title>
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/style_stock.css">
+    <script src="../js/ajax.js"></script>
+    <script src="../js/pagination.js"></script>
+    <script src="../cookie/cookie.js"></script>
+</head>
+
+<body>
+    <header>
+        <div class="header">
+            <ul>
+                <li><a href="index.html">首页</a></li>
+                <li><a href="shop.html">商城</a></li>
+                <li><a href="stock.html">库存</a></li>
+            </ul>
+            <div>
+                <span id="money"></span>
+                <span id="inventory"></span>
+            </div>
+        </div>
+    </header>
+    <main>
+        <div class="main">
+            <div class="control">
+                <div id="left">
+                    <p>全选</p>
+                    <input type="checkbox" id="all">
+                    <p>反选</p>
+                    <input type="checkbox" id="back">
+                    <p>价格 <i id="sort"></i></p>
+                </div>
+                <div id="right">
+                    <p>回收</p>
+                    <input type="button" value="回收" id="recover">
+                </div>
+            </div>
+            <div class="stock"></div>
+        </div>
+    </main>
+    <footer>
+        <div class="footer"></div>
+    </footer>
+
+    <script>
+        //报错，禁用谷歌翻译解决
+        let main = document.querySelector(".main");
+        let control = document.querySelector(".control");
+        let stock = document.querySelector(".stock");
+        let arr = new Array();
+
+        //通过cookie生成金额
+        let money = document.querySelector("#money");
+        money.innerHTML = "金额￥" + parseFloat(JSON.parse(getCookie("user")).money).toFixed(2);
+
+        /* 
+            打开页面的时候应该先获取第一次的数据
+            然后根据数据生成页码数
+        */
+
+        //点击升序降序
+        let sort = document.querySelector("#sort");
+        let string;
+        sort.onclick = function () {
+            if (string == 1) {
+                getData(1, 30, 0);
+                sort.style.borderColor = "transparent transparent #00f transparent ";
+                sort.style.top = "0px";
+                string = 0;
+            } else if (string == 0) {
+                getData(1, 30, 2);
+                sort.style.borderColor = "#fff transparent transparent transparent";
+                sort.style.top = "7px";
+                string = 2;
+            } else {
+                getData(1, 30, 1);
+                sort.style.borderColor = "#00f transparent transparent transparent";
+                sort.style.top = "7px";
+                string = 1;
+            }
+
+        }
+        //初始页码，每页展示的数量
+        getData(1, 30, 2);
+        let page = document.querySelector(".footer");
+        let flag = true;
+        // 获取数据
+        async function getData(index, length, sort) {
+            let data = await pAjax({
+                url: '../api/goodsList.php',
+                data: {
+                    username: JSON.parse(getCookie("user")).username,
+                    index: index,
+                    length: length,
+                    sort: sort
+                }
+            });
+            //得到数据
+            data = JSON.parse(data);
+            if (flag) {
+                new Pagination(page, {
+                    pageInfo: {
+                        pagenum: index,
+                        pagesize: length,
+                        total: data.total,
+                        totalpage: Math.ceil(data.total / length)
+                    },
+                    textInfo: {
+                        first: '首页',
+                        prev: '上一页',
+                        next: '下一页',
+                        last: '末页'
+                    },
+                    change: function (index) {
+                        flag = false;
+                        // 有一个参数，这个参数当前的页数
+                        getData(index, 30, 2);
+                    }
+                });
+            }
+            // 调用数据渲染的函数
+            //传出当前页数，在改页删除后不会返回第一页
+            use(data, index, 2);
+        }
+
+
+        //渲染数据
+        function use(info, page) {
+            //每次获取完数据后重新渲染
+            let inventory = document.querySelector("#inventory");
+            let price = 0;
+            let num;
+            let child = "";
+            arr = info.list;
+            arr.forEach(function (item) {
+                price += item.price * 1;
+                child += `
+                        <div index="${item.price}" id="${item.id}">
+                            <input id="check" type="checkbox" class="check">
+                            <img src="${item.url}">
+                            <p>${item.name}</p>
+                        </div>
+                    `;
+            });
+            if (price > 10000) {
+                num = (price / 1000).toFixed(2);
+                inventory.innerHTML = "当前页库存价值￥" + num + "k";
+            } else if (price < 10000) {
+                inventory.innerHTML = "当前页库存价值￥" + price;
+            }
+            stock.innerHTML = child;
+
+            //多选反选按钮
+            let checkAll = document.querySelectorAll("#all");
+            let checkBack = document.querySelectorAll("#back");
+            //绑定回收库存事件
+            let recover = document.querySelector("#recover");
+            let check = document.querySelectorAll(".check");
+            //存放回收物品的数组
+            let evenArr = new Array();
+            //为全选按钮绑定事件监听
+            for (let button of checkAll) {
+                button.addEventListener('click', function (even) {
+                    if (this.checked) {
+                        check.forEach(function (e) {
+                            e.checked = true;
+                            evenArr.push(e.parentNode);
+                        });
+                    } else {
+                        check.forEach(function (e) {
+                            e.checked = false;
+                            let a = evenArr.indexOf(e.parentNode);
+                            evenArr.splice(a, 1);
+                        });
+                    }
+                });
+            }
+            //为反选按钮绑定事件监听
+            for (let button of checkBack) {
+                button.addEventListener('click', function (even) {
+                    check.forEach(function (e) {
+                        if (e.checked) {
+                            e.checked = false;
+                            let a = evenArr.indexOf(e.parentNode);
+                            evenArr.splice(a, 1);
+
+                        } else {
+                            e.checked = true;
+                            evenArr.push(e.parentNode);
+                        }
+                    });
+                    this.checked = false;
+                });
+            }
+            //为物品上的多选按钮设置事件监听
+            for (let button of check) {
+                button.addEventListener('click', function (even) {
+                    //判断物品是否被选中，选中存入数组，取消勾选移除数组
+                    if (this.checked) {
+                        evenArr.push(this.parentNode);
+                    } else {
+                        let a = evenArr.indexOf(this.parentNode);
+                        evenArr.splice(a, 1);
+                    }
+                });
+
+            }
+
+            let all = document.querySelector("#all");
+
+            //点击回收按钮
+            recover.onclick = function () {
+                console.log(evenArr);
+                //获取物品的价值
+                let cost = 0;
+                evenArr.forEach(function (e) {
+                    //获取选中物品总价值,并弹出提示框
+                    cost += e.attributes[0].value * 1;
+                });
+                if (cost == 0) {
+                    alert("没有选择物品!");
+                    return;
+                }
+                var yes = confirm(`选中${evenArr.length}个物品，总价值为￥${cost},是否要回收`);
+                if (yes) {
+                    all.checked = false;
+                    evenArr.forEach(function (e) {
+                        ajax({
+                            url: "../api/delData.php",
+                            data: {
+                                id: e.id,
+                            },
+                            callback: function (row) {
+                                //停留在修改页，并且调用函数重新渲染
+                                getData(page, 30);
+
+                                row = JSON.parse(row);
+                                let addMoney = row[0].price;
+                                money.innerHTML = "金额￥" + parseFloat(JSON.parse(getCookie("user")).money).toFixed(2);
+                                //修改cookie的金额
+                                let obj = {
+                                    "username": JSON.parse(getCookie("user")).username,
+                                    "money": JSON.parse(getCookie("user")).money * 1 +
+                                        addMoney * 1
+                                }
+                                let objson = JSON.stringify(obj);
+                                setCookie("user", objson);
+
+                                //在数据库中修改金额
+                                ajax({
+                                    url: "../api/change.php",
+                                    data: {
+                                        username: JSON.parse(getCookie("user"))
+                                            .username,
+                                        price: JSON.parse(getCookie("user")).money,
+                                    },
+                                    callback: function (arr) {
+                                        console.log(arr);
+                                    }
+                                });
+
+                                //还原升序降序
+                                if (string == 1) {
+                                    getData(1, 30, 1);
+                                    sort.style.borderColor =
+                                        "#00f transparent transparent transparent";
+                                    sort.style.top = "7px";
+                                } else if (string == 0) {
+                                    getData(1, 30, 0);
+                                    sort.style.borderColor =
+                                        "transparent transparent #00f transparent ";
+                                    sort.style.top = "0px";
+                                } else {
+                                    getData(1, 30, 2);
+                                    sort.style.borderColor =
+                                        "#fff transparent transparent transparent";
+                                    sort.style.top = "7px";
+                                }
+                            }
+                        });
+                    });
+                } else {
+                    //设置数组的长度为零相当于把数组删除
+                    evenArr.length = 0;
+                    //把选中的多选框去除
+                    checkAll[0].checked = false;
+                    for (var t = 0; t < check.length; t++) {
+                        check[t].checked = false;
+                    }
+                }
+
+            }
+
+        }
+    </script>
+</body>
+
+</html>

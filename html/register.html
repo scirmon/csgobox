@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/style_register.min.css">
+
+    <script src="../jquery/jquery.min.js"></script>
+    <script src="../validation/dist/jquery.validate.min.js"></script>
+    <script src="../validation/src/localization/messages_zh.js"></script>
+    <script src="../js/ajax.js"></script>
+</head>
+
+<body>
+    <div>
+        <form action="" id="logn">
+            <p>
+                <label for="">用户名:<i></i></label>
+                <input type="text" name="username" id="username">
+            </p>
+            <p>
+                <label for="">密码:<i></i></label>
+                <input type="password" name="password" id="password">
+            </p>
+            <p>
+                <label for="">确认密码:<i></i></label>
+                <input type="text" name="confirmPw" id="">
+            </p>
+            <p>
+                <label for="">手机号码:<i></i></label>
+                <input type="number" name="phone" id="phone">
+            </p>
+            <p>
+                <label for="">验证码:<i></i></label>
+                <input type="text" name="verinput" id="verinput">
+                <input type="button" name="vercode" id="vercode" value="" title="看不清?换一张" class="easyui-tooltip">
+            </p>
+            <p>
+                <button>注册</button><button id="sign" title="已有账号?返回登录" class="easyui-tooltip">返回登录</button>
+            </p>
+        </form>
+    </div>
+
+    <script>
+        //用户名格式
+        $.validator.addMethod("userFormat", function (value) {
+            let reg = /[a-z0-9]{8,}/;
+            if (reg.test(value)) {
+                return true
+            }
+            return false
+        });
+        //密码格式
+        $.validator.addMethod("passwordFormat", function (value) {
+            let reg = /[a-z0-9]{4,}/;
+            if (reg.test(value)) {
+                return true
+            }
+            return false
+        });
+        //手机号码格式
+        $.validator.addMethod("phoneFormat", function (value) {
+            let reg = /^1[3,5,7,8,9]\d{9}/;
+            if (reg.test(value)) {
+                return true
+            }
+            return false
+        });
+
+        $(function () {
+            //页面加载完成后生成验证码
+            var a = vercode();
+            $("#vercode").val(a);
+
+            $("#sign").click(function () {
+                location.href = "index.html";
+            });
+            $("#logn").validate({
+                //错误显示的位置
+                errorPlacement: function (error, element) {
+                    // Append error within linked label
+                    $(element)
+                        .closest("p")
+                        //.find("label[for='" + element.attr("id") + "']")
+                        .append(error);
+                },
+                //输入就进行判断
+                errorContainer: "p.error",
+                errorElement: "span",
+                rules: {
+                    username: {
+                        required: true,
+                        userFormat: true,
+                    },
+                    password: {
+                        required: true,
+                        passwordFormat: true,
+                    },
+                    confirmPw: {
+                        required: true,
+                        equalTo: "#password",
+                    },
+                    phone: {
+                        required: true,
+                        phoneFormat: true,
+                    },
+                    verinput: {
+                        required: true,
+                        equalTo: "#vercode",
+                    }
+                },
+                messages: {
+                    username: {
+                        required: "请输入用户名",
+                        userFormat: "用户名格式不正确",
+                    },
+                    password: {
+                        required: "请输入密码",
+                        passwordFormat: "密码格式不正确",
+                    },
+                    confirmPw: {
+                        required: "请再次确认密码",
+                        equalTo: "两次密码输入不一致",
+                    },
+                    phone: {
+                        required: "请输入手机号",
+                        phoneFormat: "手机格式不正确",
+                    },
+                    verinput: {
+                        required: "请输入验证码",
+                        equalTo: "验证码不正确",
+                    }
+                },
+                submitHandler: function () {
+                    // 发送ajax请求
+                    ajax({
+                        url: "../api/logn.php",
+                        data: {
+                            username: $("#username").val(),
+                            password: $("#password").val(),
+                            phone: $("#phone").val()
+                        },
+                        callback: function (res) {
+                            console.log(res);
+                            if (res == "用户名已被占用") {
+                                alert("用户名已被注册");
+                                $("#username").val("");
+                            } else {
+                                alert("注册成功,返回登录");
+                                location.href = "index.html";
+                            }
+                        }
+                    });
+                }
+            });
+        });
+
+        //产生随机验证码
+        function vercode() {
+            var str = "";
+            var num = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s",
+                "t", "u", "v", "w", "x", "y", "z", "0", "1", "2", "3", "4", "5", "6", "7", "9", "0"
+            ];
+            for (var i = 0; i < 4; i++) {
+                str += num[Math.floor(Math.random() * num.length)];
+            }
+            return str;
+        }
+        //用户点击更改验证码
+        $("#vercode").click(function () {
+            var a = vercode();
+            $("#vercode").val(a);
+        });
+    </script>
+</body>
+
+</html>

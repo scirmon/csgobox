@@ -1,0 +1,63 @@
+html,
+body {
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(rgb(20, 20, 150), #030353);
+}
+
+div {
+    padding: 20px 20px;
+    width: 400px;
+    height: 300px;
+    background: #ccc;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    form {
+        p {
+            margin: auto;
+            margin-bottom: 25px;
+            // width: 260px;
+
+            label {
+                width: 60px;
+                text-align: justify;
+                line-height: 0;
+                display: inline-block;
+
+                i {
+                    display: inline-block;
+                    /*padding-left: 100%;*/
+                    width: 100%;
+                }
+            }
+            input{
+                height: 20px;
+            }
+
+            #verinput{
+                margin-right: 10px;
+                padding: 0 18px;
+                width: 70px;
+            }
+            #vercode{
+                padding: 0 18px;
+                width: 70px;
+            }
+
+            button{
+                cursor: pointer;
+            }
+
+        }
+
+        p:nth-of-type(6){
+            display: flex;
+            justify-content: space-around;
+        }
+
+    }
+
+}

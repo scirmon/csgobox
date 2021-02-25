@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>开箱</title>
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/style_box.min.css">
+    <script src="../js/box.js"></script>
+    <script src="../js/ajax.js"></script>
+    <script src="../cookie/cookie.js"></script>
+</head>
+
+<body>
+    <div class="mask"></div>
+    <header>
+        <div class="header">
+            <ul>
+                <li><a href="index.html">首页</a></li>
+                <li><a href="shop.html">商城</a></li>
+                <li><a href="stock.html">库存</a></li>
+            </ul>
+            <div>
+                <span id="money"></span>
+                <img id="sign" src="../images/mine.png" alt="登录" title="登录">
+            </div>
+        </div>
+    </header>
+    <main>
+        <div class="open"></div>
+        <div class="show"></div>
+    </main>
+</body>
+
+<script>
+    //通过cookie生成金额
+    let money = document.querySelector("#money");
+    money.innerHTML = "金额￥" + parseFloat(JSON.parse(getCookie("user")).money).toFixed(2);
+
+    let open = document.querySelector(".open");
+    let show = document.querySelector(".show");
+    let strShow = `
+            <div id="header">
+                <p>包含以下物品之一</p>
+            </div>
+    `;
+    let strOpen = ``;
+    
+    //拆分出箱子的id
+    let id = location.search.slice(1).split('=')[1];
+    //用传递过来的id去过滤数据
+    let arr = product.filter(function (item) {
+        return item.case_product_id == id;
+    });
+    //生成show的内容
+    arr.forEach(function (e) {
+        e.group_list.forEach(function (eve) {
+            if (eve.special == 1) {
+                return
+            }
+            //var color = eve.color;
+            eve.list.forEach(function (ever) {
+                strShow += `
+                    <div style="background: #${eve.color};">
+                        <img src="${ever.icon_url}">
+                        <p>${ever.name}</p>
+                        <p>价格:￥${parseFloat(ever.max_price)}~￥${parseFloat(ever.min_price)}</p>
+                    </div>
+                `;
+            });
+        });
+    });
+    show.innerHTML = strShow;
+
+    //生成箱子内容
+    arr.forEach(function (e) {
+        strOpen = `
+            <div><img src="${e.icon_url}"></div>
+            <input type="button" id="open" value="开箱">
+        `;
+    });
+    open.innerHTML = strOpen;
+
+    //开箱
+    let box = document.querySelector(".open div");
+    let openBox = document.querySelector("#open");
+
+    openBox.onmouseover = function () {
+        openBox.style.background = "#063e9b";
+    }
+    openBox.onmouseout = function () {
+        openBox.style.background = "#031b43";
+    }
+    openBox.onclick = function () {
+        //点击扣除金额
+        let reduce = (JSON.parse(getCookie("user")).money * 1 - 17);
+        if (reduce < 0) {
+            alert("金额不足");
+            return;
+        }
+        money.innerHTML = "金额￥" + parseFloat(JSON.parse(getCookie("user")).money - 17).toFixed(2);
+
+        //修改cookie的金额
+        let obj = {
+            "username": JSON.parse(getCookie("user")).username,
+            "money": reduce
+        }
+        let objson = JSON.stringify(obj);
+        setCookie("user", objson);
+
+        //在数据库中修改金额
+        ajax({
+            url: "../api/change.php",
+            data: {
+                username: JSON.parse(getCookie("user")).username,
+                price: reduce,
+            },
+            callback: function (res) {
+                console.log(res);
+            }
+        });
+
+        //点击按钮更改css
+        box.style.border = "1px solid #031b43";
+        openBox.disabled = true;
+        openBox.value = "请等待";
+        openBox.style.cursor = "progress";
+        let img = document.querySelector(".open img");
+        img.style.display = "none";
+        //通过直接创建子元素的方式生成滚动条
+        let goods = document.createElement("div");
+        goods.className = "goods";
+        box.appendChild(goods);
+        //创建新的动画(通过随机数更改滚动条移动的距离,产生急停滑步效果)
+        let open = `@keyframes open {
+                        from {
+                            transform: translateX(0px);
+                        }
+
+                        to {
+                            transform: translateX(-3530px);
+                        }
+                    }`;
+
+        //创建物品
+        //获取所有的物品
+        let arrGoods;
+        arr.forEach(function (e) {
+            arrGoods = e.group_list;
+        });
+        //获取军规级的物品
+        let armlevel;
+        //获取受限级的物品
+        let bounded;
+        //获取保密级的物品
+        let secrecy;
+        //获取隐秘级的物品
+        let secret;
+        //获取特殊物品
+        let special;
+
+        arrGoods.forEach(function (item) {
+            if (item.name == "军规级") {
+                armlevel = item.list;
+            } else if (item.name == "受限") {
+                bounded = item.list;
+            } else if (item.name == "保密") {
+                secrecy = item.list;
+            } else if (item.name == "隐秘") {
+                secret = item.list;
+            } else {
+                special = item.list;
+            }
+        });
+
+        //生成滚动条内容
+        let arms = "";
+        for (let i = 0; i < 23; i++) {
+            let num = Math.random() * 100;
+            let max;
+            //生成图片
+            if (num <= 50) {
+                max = armlevel.length;
+                let ranum = Math.floor(Math.random() * max);
+                arms += `
+                    <div id="arms" style="background: #4b69ff">
+                        <img src="${armlevel[ranum].icon_url}">
+                    </div>
+                `;
+            } else if (num > 50 && num <= 80) {
+                max = bounded.length;
+                let ranum = Math.floor(Math.random() * max);
+                arms += `
+                    <div id="arms" style="background: #8847ff">
+                        <img src="${bounded[ranum].icon_url}">
+                    </div>
+                `;
+            } else if (num > 80 && num <= 90) {
+                max = secrecy.length;
+                let ranum = Math.floor(Math.random() * max);
+                arms += `
+                    <div id="arms" style="background: #d32ce6">
+                        <img src="${secrecy[ranum].icon_url}">
+                    </div>
+                `;
+            } else if (num > 90 && num <= 95) {
+                max = secret.length;
+                let ranum = Math.floor(Math.random() * max);
+                arms += `
+                    <div id="arms" style="background: #eb4b4b">
+                        <img src="${secret[ranum].icon_url}">
+                    </div>
+                `;
+            } else {
+                //判断是否有特殊物品
+                if (special) {
+                    max = special.length;
+                    let ranum = Math.floor(Math.random() * max);
+                    arms += `
+                    <div id="arms" style="background: #e9dda9">
+                        <img src="${special[ranum].icon_url}">
+                    </div>
+                `;
+                } else {
+                    max = secret.length;
+                    let ranum = Math.floor(Math.random() * max);
+                    arms += `
+                    <div id="arms" style="background: #eb4b4b">
+                        <img src="${secret[ranum].icon_url}">
+                    </div>
+                `;
+                }
+            }
+        }
+        //得到物品
+        goods.innerHTML = arms;
+        let gain = goods.children[21];
+
+        //通过图片地址获取物品信息
+        let images = gain.innerHTML;
+        let src = images.slice(35, -23); //截取图片链接
+        let weaponName; //物品名字
+        let weaponColor; //物品颜色
+        let weaponLevel; //物品等级
+        let weaponPrice; //物品价格
+        //用图片链接进行比较
+        arrGoods.forEach(function (item) {
+            item.list.forEach(function (it) {
+                if (it.icon_url == src) {
+                    weaponName = it.name;
+                    weaponColor = item.color;
+                    weaponLevel = item.name;
+                    weaponPrice = it.max_price;
+                }
+            })
+
+        })
+
+        //存入数据库
+        ajax({
+            url: `../api/addData.php`,
+            data: {
+                username: (JSON.parse(getCookie("user")).username),
+                name: weaponName,
+                level: weaponLevel,
+                url: src,
+                price: weaponPrice
+            },
+            callback: function (res) {
+                console.log(res);
+            }
+        });
+
+        //添加延时函数生成遮罩
+        setTimeout(function make() {
+            let mask = document.querySelector(".mask");
+            mask.style.display = "block";
+            let weapon = ``;
+            weapon += `
+                <div>
+                    <h2>恭喜获得</h2>
+                    <img src="${src}">
+                    <p style="color: #${weaponColor}">${weaponName}</p>
+                    <input id="ok" type="button" value="确认">
+                </div>
+            `;
+            mask.innerHTML = weapon;
+
+            // let xhr = new XMLHttpRequest();
+            // xhr.open('get', `../api/addData.php?name=${weaponName}&level=${weaponLevel}&url=${src}`);
+            // xhr.send();
+            // xhr.onload = function () {
+            //     console.log(xhr.responseText);
+            // }
+
+            let join = document.querySelector("#ok");
+            join.onclick = function () {
+                mask.style.display = "none";
+                window.location.reload();
+            }
+
+        }, 10000);
+
+
+    }
+</script>
+
+</html>

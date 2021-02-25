@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商城</title>
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/style_stock.min.css">
+    <link rel="stylesheet" href="../iconfont/iconfont.css">
+    <script src="../js/ajax.js"></script>
+    <script src="../cookie/cookie.js"></script>
+    <script src="../js/pagination.js"></script>
+    <script src="../jquery/jquery.min.js"></script>
+    <style>
+        header .header div {
+            width: 150px;
+        }
+
+        main {
+            height: 2048px;
+        }
+
+        main .main {
+            height: 2048px;
+            overflow-y: scroll;
+        }
+
+        .load {
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            position: fixed;
+            z-index: 10000;
+        }
+
+        .load img {
+            width: 10%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            /* 高度的一半 */
+            margin-top: -5%;
+            /* 宽度的一半 */
+            margin-left: -5%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="load">
+        <img id="load" src="../images/G2.gif" alt="">
+    </div>
+    <header>
+        <div class="header">
+            <ul>
+                <li><a href="./index.html">首页</a></li>
+                <li><a href="./shop.html">商城</a></li>
+                <li><a href="./stock.html">库存</a></li>
+            </ul>
+            <div>
+                <span id="money"></span>
+            </div>
+        </div>
+    </header>
+    <main>
+        <div class="main">
+            <div class="ctrl">
+                <div class="link">
+                    <div>
+                        <span class="iconfont icon-bishou"></span>
+                        <p>匕首</p>
+                        <ul>
+                            <li id="sort">蝴蝶刀</li>
+                            <li id="sort">弯刀</li>
+                            <li id="sort">鲍伊猎刀</li>
+                            <li id="sort">熊刀</li>
+                            <li id="sort">折叠刀</li>
+                            <li id="sort">穿肠刀</li>
+                            <li id="sort">猎杀者匕首</li>
+                            <li id="sort">刺刀</li>
+                            <li id="sort">M9 刺刀</li>
+                            <li id="sort">爪子刀</li>
+                            <li id="sort">锯齿爪刀</li>
+                            <li id="sort">暗影双匕</li>
+                            <li id="sort">折刀</li>
+                            <li id="sort">短剑</li>
+                            <li id="sort">海豹短刀</li>
+                            <li id="sort">骷髅匕首</li>
+                            <li id="sort">求生匕首</li>
+                            <li id="sort">系绳匕首</li>
+                            <li id="sort">流浪者匕首</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <span class="iconfont icon-PVCshoutao"></span>
+                        <p>手套</p>
+                        <ul style="width: 300px;">
+                            <li id="sort">驾驶手套</li>
+                            <li id="sort">运动手套</li>
+                            <li id="sort">专业手套</li>
+                            <li id="sort">血猎手套</li>
+                            <li id="sort">裹手</li>
+                            <li id="sort">摩托手套</li>
+                            <li id="sort">九头蛇手套</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <span class="iconfont icon-shouqiang"></span>
+                        <p>手枪</p>
+                        <ul style="width: 400px;">
+                            <li id="sort">USP 消音版</li>
+                            <li id="sort">格洛克 18 型</li>
+                            <li id="sort">P2000</li>
+                            <li id="sort">P250</li>
+                            <li id="sort">双持贝瑞塔</li>
+                            <li id="sort">FN57</li>
+                            <li id="sort">Tec-9</li>
+                            <li id="sort">CZ75</li>
+                            <li id="sort">沙漠之鹰</li>
+                            <li id="sort">R8 左轮手枪</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <span class="iconfont icon-buqiang"></span>
+                        <p>步枪</p>
+                        <ul style="width: 400px;">
+                            <li id="sort">AK-47</li>
+                            <li id="sort">M4A4</li>
+                            <li id="sort">M4A1 消音型</li>
+                            <li id="sort">法玛斯</li>
+                            <li id="sort">加利尔 AR</li>
+                            <li id="sort">SG 553</li>
+                            <li id="sort">AUG</li>
+                            <li id="sort">SSG 08</li>
+                            <li id="sort">AWP</li>
+                            <li id="sort">SCAR-20</li>
+                            <li id="sort">G3SG1</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <span class="iconfont icon-chongfengqiang"></span>
+                        <p>冲锋枪</p>
+                        <ul style="width: 300px;left: -300px;">
+                            <li id="sort">MAC-10</li>
+                            <li id="sort">MP9</li>
+                            <li id="sort">MP7</li>
+                            <li id="sort">PP-野牛</li>
+                            <li id="sort">MP5-SD</li>
+                            <li id="sort">UMP-45</li>
+                            <li id="sort">P90</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <span class="iconfont icon-jiqiang"></span>
+                        <p>机枪</p>
+                        <ul style="width: 100px;height: 80px;left: -100px;">
+                            <li id="sort">内格夫</li>
+                            <li id="sort">M249</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <span class="iconfont icon-xiandanqiang"></span>
+                        <p>霰弹枪</p>
+                        <ul style="width: 200px;height: 80px;left: -200px;">
+                            <li id="sort">新星</li>
+                            <li id="sort">截短霰弹枪</li>
+                            <li id="sort">MAG-7</li>
+                            <li id="sort">XM1014</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="sort">
+                    <input type="text" id="content" placeholder="输入物品名称">
+                    <input type="button" id="search" value="搜索">
+                </div>
+            </div>
+            <div class="list"></div>
+        </div>
+        <div class="car">
+            <img id="monkeybody" src="../images/monkey.png" alt="">
+            <img id="monkeyhand" src="../images/monkeyhand.png" alt="">
+            <div id="car"></div>
+            <div id="pay">
+                <input id="buy" type="button" value="结算">
+                <input id="clear" type="button" value="清空">
+            </div>
+            <i id="slip"></i>
+            <i id="up"></i>
+        </div>
+    </main>
+    <footer>
+        <div class="footer"></div>
+    </footer>
+
+    <script>
+        //通过cookie生成金额
+        let money = document.querySelector("#money");
+        //toFixed只能针对Number类型才能使用，所以对于字符类型的要用parseFloat或者parseInt函数先转一下再调用
+        money.innerHTML = "金额￥" + parseFloat(JSON.parse(getCookie("user")).money).toFixed(2);
+
+        let list = document.querySelector(".list");
+        let weapon;
+        let str = "";
+        let arr = new Array();
+
+        use();
+        //渲染数据
+        function use(id) {
+            weapon = "";
+            str = "";
+
+            $.ajax({
+                url: '../json/box.json',
+                // type:'get'
+                method: 'get',
+                // data: 'data=我是用ajax发送的一个请求',
+                data: {
+                    data: '我是ajax发送的请求'
+                },
+                dataType: 'json',
+                beforeSend: function () {
+                    $(".load").css("display", "block");
+                },
+                success: function (res) {
+                    //console.log(res);
+                    //res = JSON.parse(res);
+                    //用传递过来的id去过滤数据
+                    if (id != undefined) {
+                        weapon = res.filter(function (item) {
+                            return item.name.search(id) != -1;
+                        });
+                    } else {
+                        weapon = res;
+                    }
+                    if (weapon.length == 0) {
+                        alert("未搜索到你想要的内容");
+                        return;
+                    }
+                    weapon.forEach(function (e) {
+                        e.group_list.forEach(function (eve) {
+                            eve.list.forEach(function (even) {
+                                arr.push(even);
+                                str += `
+                                        <div class="shop">
+                                            <div>
+                                                <img src="${even.icon_url}">
+                                            </div>
+                                            <div>
+                                                <p index="${eve.name}" style="color:#${eve.color}">${even.name}</p>
+                                            </div>
+                                            <div>
+                                                <p style="color:#ffd000">￥${parseFloat(even.max_price)}</p>
+                                                <input id="add" type="button" value="加入购物车">
+                                            </div>
+                                        </div>
+                                    `;
+                            });
+                        });
+                    });
+                    list.innerHTML = str;
+
+                    //加入购物车
+                    let add = document.querySelectorAll("#add");
+                    let goods = "";
+                    //获取购物车
+                    let car = document.querySelector("#car");
+                    //存储物品的数量
+                    let num = 0;
+                    //创建空数组
+                    let goodslist = new Array();
+                    //获取所有加入购物车的物品
+                    let shop = car.children;
+
+                    //为物品上的加购按钮设置事件监听
+                    for (let button of add) {
+                        button.addEventListener('click', function (even) {
+                            //console.log(even);
+                            //把物品名字存入数组
+                            //even.path[2].childNodes[3].innerText是按钮获取到的物品名字
+                            if (goodslist.indexOf(even.path[2].childNodes[3].innerText) == -1) {
+                                goodslist.push(even.path[2].childNodes[3].innerText);
+                                num = 1;
+                                goods += `
+                                    <div>
+                                        <img src="${even.path[2].childNodes[1].children[0].currentSrc}">
+                                        <p index="${$(even.path[2].children[1].children[0]).attr("index")}">${even.path[2].childNodes[3].innerText}</p>
+                                        <p>${even.path[1].innerText}</p>
+                                        <input id="cut" type="button" value="-"><input id="num" type="text" value="${num}"><input id="plus" type="button" value="+">
+                                    </div>
+                                `;
+                                //console.log(goods);
+                                car.innerHTML = goods;
+                            } else {
+                                num += 1;
+                                let place = goodslist.indexOf(even.path[2].childNodes[3].innerText);
+                                shop[place].childNodes[8].value = num;
+                                //这里加的是直接加入到了页面，并未对goods进行处理(√)
+                                //后一个物品的num值会沿用前一个物品的num值
+                                $("#num").attr("value", num);
+                                goods = car.innerHTML;
+                            }
+                        });
+                    }
+
+
+
+                    //结算、清空按钮
+                    let buy = document.querySelector("#buy");
+                    let clear = document.querySelector("#clear");
+
+                    //总数
+                    let cash = 0;
+                    let total = 0;
+
+                    //结算按钮
+                    buy.onclick = function () {
+                        //获得购物车总值
+                        for (let i = 0; i < shop.length; i++) {
+                            cash = shop[i].children[4].value * shop[i].children[2].innerText.substring(
+                                1) * 1;
+                            total += cash;
+                        }
+                        //扣除金额
+                        let reduce = (JSON.parse(getCookie("user")).money * 1 - total);
+                        if (reduce < 0) {
+                            alert("金额不足");
+                            return;
+                        } else {
+                            //修改cookie的金额
+                            let obj = {
+                                "username": JSON.parse(getCookie("user")).username,
+                                "money": reduce
+                            }
+                            let objson = JSON.stringify(obj);
+                            setCookie("user", objson);
+
+                            //通过cookie改变页面金额
+                            let money = document.querySelector("#money");
+                            money.innerHTML = "金额￥" + parseFloat(JSON.parse(getCookie("user")).money).toFixed(2);
+
+                            //在数据库中修改金额
+                            ajax({
+                                url: "../api/change.php",
+                                data: {
+                                    username: JSON.parse(getCookie("user")).username,
+                                    price: reduce,
+                                },
+                                callback: function (res) {
+                                    console.log(res);
+                                }
+                            });
+                            //把物品存入数据库
+                            for (let i = 0; i < shop.length; i++) {
+                                ajax({
+                                    url: `../api/addData.php`,
+                                    data: {
+                                        username: (JSON.parse(getCookie("user")).username),
+                                        name: shop[i].children[1].innerText,
+                                        level: ($(shop[i].children[1]).attr("index")),
+                                        url: ($(shop[i].children[0]).attr("src")),
+                                        price: (shop[i].children[2].innerText.substring(1))
+                                    },
+                                    callback: function (res) {
+                                        console.log(res);
+                                    }
+                                });
+                            }
+                            //结算完成后清空
+                            alert("购买成功,谢谢惠顾");
+                            car.innerHTML = "";
+                            goodslist.length = 0;
+                            goods = "";
+                        }
+
+                    }
+
+                    //清空按钮
+                    clear.onclick = function () {
+                        car.innerHTML = "";
+                        goodslist.length = 0;
+                        goods = "";
+                    }
+                },
+                error: function (err) {
+                    console.log(err);
+                },
+                complete: function () {
+                    $(".load").css("display", "none");
+                },
+            });
+        }
+
+        //分类
+        let sort = document.querySelectorAll("#sort");
+        for (let button of sort) {
+            button.addEventListener('click', function (even) {
+                console.log(even.path[0].innerText);
+            });
+        }
+
+        //搜索
+        let content = document.querySelector("#content");
+        let search = document.querySelector("#search");
+
+        search.onclick = function () {
+            if (!content.value) {
+                alert("你没有输入任何内容");
+            } else {
+                use(content.value);
+            }
+        }
+
+        //隐藏购物车
+        let slip = document.querySelectorAll("#slip");
+        let slipFlage = true;
+        for (let button of slip) {
+            button.addEventListener('click', function () {
+                if (slipFlage == true) {
+                    $(".car").animate({
+                        left: '-10%'
+                    });
+                    $("#slip").css({
+                        "transform": "rotate(0deg)",
+                        "top": "42%"
+                    });
+                    slipFlage = false;
+                } else {
+                    $(".car").animate({
+                        left: '0'
+                    });
+                    $("#slip").css({
+                        "transform": "rotate(180deg)",
+                        "top": "41%"
+                    });
+                    slipFlage = true;
+                }
+            });
+        }
+
+        //回到顶部
+        let up = document.querySelectorAll("#up");
+        let upFlage = true
+
+        for (let button of up) {
+            button.addEventListener('click', function () {
+                let windowH = $("html,body").scrollTop();
+                let mainH = $(".main").scrollTop();
+
+                let back = setInterval(() => {
+                    if (windowH > 0 || mainH > 0) {
+                        $("html,body").scrollTop(windowH - 10);
+                        $(".main").scrollTop(mainH - 100);
+                        windowH -= 10;
+                        mainH -= 100;
+                    } else {
+                        $("html,body").scrollTop(0);
+                        $(".main").scrollTop(0);
+                        clearInterval(back);
+                    }
+                }, 10);
+            });
+        }
+    </script>
+</body>
+
+</html>
