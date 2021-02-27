@@ -7,7 +7,7 @@
     <title>小包开箱网</title>
     <link rel="stylesheet" href="../css/base.css">
     <link rel="stylesheet" href="../css/style_index.css">
-    <script src="../js/box.js"></script>
+    <script src="../jquery/jquery.min.js"></script>
     <script src="../js/ajax.js"></script>
     <script src="../cookie/cookie.js"></script>
 </head>
@@ -83,66 +83,103 @@
         let arrSou = new Array();
 
         //对数据进行分类
-        product.forEach(function (item) {
-            if (item.name.search("武器箱") != -1) {
-                arrOrd.push(item);
 
-            } else if (item.name.search("纪念包") != -1) {
-                arrSou.push(item);
-            }
-        });
+        $.ajax({
+            url: '../json/box.json',
+            // type:'get'
+            method: 'get',
+            // data: 'data=我是用ajax发送的一个请求',
+            data: {
+                data: '我是ajax发送的请求'
+            },
+            dataType: 'json',
+            beforeSend: function () {
+                $(".load").css("display", "block");
+            },
+            success: function (res) {
+                res.forEach(function (item) {
+                    if (item.name.search("武器箱") != -1) {
+                        arrOrd.push(item);
 
-        let strOrd = `<div class="title">
+                    } else if (item.name.search("纪念包") != -1) {
+                        arrSou.push(item);
+                    }
+                });
+
+                let strOrd = `<div class="title">
                         <h2>武器箱</h2>
                         <a id="more" index="ordinary">更多 ></a>
                     </div>`;
-        arrOrd.forEach(function (i) {
-            strOrd += `
+                arrOrd.forEach(function (i) {
+                    strOrd += `
                     <div class="box" type="ordinary" index="${i.case_product_id}">
                     <img src=${i.icon_url}>
                     <p>${i.name}</p>
                     </div>
                 `;
-        })
-        let strSou = `<div class="title">
+                })
+                let strSou = `<div class="title">
                         <h2>纪念包</h2>
                         <a id="more" index="souvenir">更多 ></a>
                     </div>`;
-        arrSou.forEach(function (i) {
-            strSou += `
+                arrSou.forEach(function (i) {
+                    strSou += `
                     <div class="box" type="souvenir" index="${i.case_product_id}">
                     <img src=${i.icon_url}>
                     <p>${i.name}</p>
                     </div>
                 `;
-        })
+                })
 
-        ordinary.innerHTML = strOrd;
-        souvenir.innerHTML = strSou;
+                ordinary.innerHTML = strOrd;
+                souvenir.innerHTML = strSou;
 
-        //获取所有箱子，跳转到列表页
-        let child = document.querySelectorAll(".box");
-        child.forEach(function (e) {
-            e.onclick = function () {
-                if (!getCookie("user")) {
-                    alert("请先登录");
-                    return
-                }
+                //获取所有箱子，跳转到列表页
+                let child = document.querySelectorAll(".box");
+                child.forEach(function (e) {
+                    e.onclick = function () {
+                        if (!getCookie("user")) {
+                            alert("请先登录");
+                            return
+                        }
 
-                let id = this.getAttribute("index");
-                let type = this.getAttribute("type");
-                if (type == "ordinary") {
-                    open("./box.html?id=" + id, "_self");
-                } else {
-                    open("./pack.html?id=" + id, "_self");
-                }
-                // 去到详情页的时候 要根据点击的商品来显示对应的数据
-                // 应该把这个商品的唯一值当成参数传递过去
-                // 点击li的时候，获取当前li的index值 其实就是当前商品的id值
-                // getAttribute('属性') 获取元素 属性的属性值
-                // 或去点击这个元素 index属性的属性值
-            }
-        })
+                        let id = this.getAttribute("index");
+                        let type = this.getAttribute("type");
+                        if (type == "ordinary") {
+                            open("./box.html?id=" + id, "_self");
+                        } else {
+                            open("./pack.html?id=" + id, "_self");
+                        }
+                        // 去到详情页的时候 要根据点击的商品来显示对应的数据
+                        // 应该把这个商品的唯一值当成参数传递过去
+                        // 点击li的时候，获取当前li的index值 其实就是当前商品的id值
+                        // getAttribute('属性') 获取元素 属性的属性值
+                        // 或去点击这个元素 index属性的属性值
+                    }
+                })
+
+                //获取更多按钮,跳转到更多页
+                let more = document.querySelectorAll("#more");
+                more.forEach(function (eve) {
+                    eve.onclick = function () {
+                        if (!getCookie("user")) {
+                            alert("请先登录");
+                            return
+                        }
+
+                        var kind = this.getAttribute("index");
+                        open("./more.html?id=" + kind, "_self");
+                    }
+                })
+            },
+            error: function (err) {
+                console.log(err);
+            },
+            complete: function () {
+                $(".load").css("display", "none");
+            },
+        });
+
 
         //点击商城页
         let shop = document.querySelector("#shop");
@@ -163,20 +200,6 @@
                 alert("请先登录");
             }
         }
-
-        //获取更多按钮,跳转到更多页
-        let more = document.querySelectorAll("#more");
-        more.forEach(function (eve) {
-            eve.onclick = function () {
-                if (!getCookie("user")) {
-                    alert("请先登录");
-                    return
-                }
-
-                var kind = this.getAttribute("index");
-                open("./more.html?id=" + kind, "_self");
-            }
-        })
 
         //登录
         //产生登录遮罩

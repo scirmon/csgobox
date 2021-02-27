@@ -7,7 +7,7 @@
     <title>更多页</title>
     <link rel="stylesheet" href="../css/base.css">
     <link rel="stylesheet" href="../css/style_more.css">
-    <script src="../js/box.js"></script>
+    <script src="../jquery/jquery.min.js"></script>
     <script src="../cookie/cookie.js"></script>
 </head>
 
@@ -36,7 +36,7 @@
         //通过cookie生成金额
         let money = document.querySelector("#money");
         money.innerHTML = "金额￥" + parseFloat(JSON.parse(getCookie("user")).money).toFixed(2);
-        
+
         let main = document.querySelector(".main");
 
         //判断是什么种类
@@ -46,35 +46,56 @@
         } else if (kind == "souvenir") {
             kind = "纪念包";
         }
-        //用传递过来的id去过滤数据
-        let arr = product.filter(function (item) {
-            return item.name.search(kind) != -1;
+
+        $.ajax({
+            url: '../json/box.json',
+            // type:'get'
+            method: 'get',
+            // data: 'data=我是用ajax发送的一个请求',
+            data: {
+                data: '我是ajax发送的请求'
+            },
+            dataType: 'json',
+            beforeSend: function () {
+                $(".load").css("display", "block");
+            },
+            success: function (res) {
+                //用传递过来的id去过滤数据
+                let str = "";
+                let arr = res.filter(function (item) {
+                    return item.name.search(kind) != -1;
+                });
+                arr.forEach(function (e) {
+                    str += `
+                        <div class="box" index="${e.case_product_id}">
+                            <img src=${e.icon_url}>
+                            <p>${e.name}</p>
+                        </div>
+                    `;
+                })
+                main.innerHTML = str;
+
+                //获取所有箱子，跳转到列表页
+                let child = document.querySelectorAll(".box");
+                child.forEach(function (e) {
+                    e.onclick = function () {
+                        // 去到详情页的时候 要根据点击的商品来显示对应的数据
+                        // 应该把这个商品的唯一值当成参数传递过去
+                        // 点击li的时候，获取当前li的index值 其实就是当前商品的id值
+                        // getAttribute('属性') 获取元素 属性的属性值
+                        // 或去点击这个元素 index属性的属性值
+                        var id = this.getAttribute("index");
+                        open("box.html?id=" + id, "_self");
+                    }
+                })
+            },
+            error: function (err) {
+                console.log(err);
+            },
+            complete: function () {
+                $(".load").css("display", "none");
+            },
         });
-
-        let str = "";
-        arr.forEach(function (e) {
-            str += `
-                <div class="box" index="${e.case_product_id}">
-                    <img src=${e.icon_url}>
-                    <p>${e.name}</p>
-                </div>
-            `;
-        })
-        main.innerHTML = str;
-
-        //获取所有箱子，跳转到列表页
-        let child = document.querySelectorAll(".box");
-        child.forEach(function (e) {
-            e.onclick = function () {
-                // 去到详情页的时候 要根据点击的商品来显示对应的数据
-                // 应该把这个商品的唯一值当成参数传递过去
-                // 点击li的时候，获取当前li的index值 其实就是当前商品的id值
-                // getAttribute('属性') 获取元素 属性的属性值
-                // 或去点击这个元素 index属性的属性值
-                var id = this.getAttribute("index");
-                open("box.html?id=" + id, "_self");
-            }
-        })
     </script>
 </body>
 
