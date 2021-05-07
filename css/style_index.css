@@ -155,6 +155,12 @@ footer .footer {
   height: 100px;
   background: #000;
 }
+footer .footer a {
+  color: #4886FF;
+}
+footer .footer a:hover {
+  color: #ffd000;
+}
 
 .mask {
   position: fixed;
