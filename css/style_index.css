@@ -55,6 +55,7 @@ header .header ul li:hover {
 header .header div {
   width: 200px;
   float: right;
+  position: relative;
 }
 header .header div span {
   color: #ffd000;
@@ -65,6 +66,23 @@ header .header div img {
   width: 50px;
   height: 50px;
   float: right;
+}
+header .header div .quit {
+  width: 50px;
+  height: 100px;
+  background: #fff;
+  border-radius: 4px;
+  position: absolute;
+  bottom: -72px;
+  right: 23px;
+  display: none;
+}
+header .header div .quit ul li {
+  width: 100%;
+  height: 25px;
+  border-top: 1px #4e4e5b solid;
+  border-bottom: 1px #4e4e5b solid;
+  cursor: pointer;
 }
 
 main {
@@ -155,10 +173,13 @@ footer .footer {
   height: 100px;
   background: #000;
 }
-footer .footer a {
+footer .footer div {
+  padding-top: 40px;
+}
+footer .footer div a {
   color: #4886FF;
 }
-footer .footer a:hover {
+footer .footer div a:hover {
   color: #ffd000;
 }
 

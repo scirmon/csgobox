@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>小包开箱网</title>
+    <link rel="shortcut icon" href="../bitbug_favicon.ico">
     <link rel="stylesheet" href="../css/base.css">
     <link rel="stylesheet" href="../css/style_index.css">
     <script src="../jquery/jquery.min.js"></script>
@@ -43,6 +44,11 @@
             <div>
                 <span id="money"></span>
                 <img id="sign" src="../images/mine.png" alt="登录" title="登录">
+                <div class="quit">
+                    <ul>
+                        <li id="quit">注销</li>
+                    </ul>
+                </div>
             </div>
         </div>
     </header>
@@ -58,7 +64,9 @@
     </main>
     <footer>
         <div class="footer">
-            <a href="https://beian.miit.gov.cn/" target="_blank">滇ICP备2021002927号</a>
+            <div>
+                <a href="https://beian.miit.gov.cn/" target="_blank">滇ICP备2021002927号</a>
+            </div>
         </div>
     </footer>
 
@@ -206,12 +214,26 @@
             }
         }
 
+        //个人信息栏
+        let quit = document.querySelector(".quit");
+
+        //注销按钮
+        let out = document.querySelector("#quit");
+        out.onclick = function(){
+            setCookie("user", "", -1000);
+            location.reload();
+        }
+
         //登录
         //产生登录遮罩
         let sign = document.querySelector("#sign");
         let mask = document.querySelector(".mask");
         sign.onclick = function () {
-            mask.style.display = "block";
+            if (getCookie("user")) {
+                quit.style.display = "block";
+            } else {
+                mask.style.display = "block";   
+            }
         }
         //取消按钮
         let close = document.querySelector("#close")
